@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TickTacToe.GameWindow"
+        Title="GameWindow">
+    <Grid ShowGridLines="True">
+        <!-- Define a 4x3 Grid -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Name="Winner" Grid.Row="0" Grid.Column="0" Text="Winner=" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" ></TextBlock>
+        <Button Name = "Restart" Content = "Restart" Grid.Row="0" Grid.Column="1" HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center" Click="Restart_OnClick" Margin="5" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ></Button>
+        <Button Name = "Back" Content = "Back" Grid.Row="0" Grid.Column="2" HorizontalContentAlignment="Center" 
+                VerticalContentAlignment="Center" Click="Back_OnClick" Margin="5" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ></Button>
+        
+        
+        <Button Name="TL" Content="" Grid.Row="1" Grid.Column="0" Margin="5"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Background="LightSeaGreen" Foreground="White" FontSize="18"
+                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click = "TL_OnClick"/>
+                
+        <Button Name="TM" Content="" Grid.Row="1" Grid.Column="1" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="TM_OnClick"/>
+        <Button Name="TR" Content="" Grid.Row="1" Grid.Column="2" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="TR_OnClick"/>
+
+        <Button Name="ML" Content="" Grid.Row="2" Grid.Column="0" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="ML_OnClick"/>
+        <Button Name="MM" Content="" Grid.Row="2" Grid.Column="1" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="MM_OnClick"/>
+        <Button Name="MR" Content="" Grid.Row="2" Grid.Column="2" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="MR_OnClick"/>
+
+        <Button Name="BL" Content="" Grid.Row="3" Grid.Column="0" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BL_OnClick" />
+        <Button Name="BM" Content="" Grid.Row="3" Grid.Column="1" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BM_OnClick" />
+        <Button Name="BR" Content="" Grid.Row="3" Grid.Column="2" Margin="5"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="LightSeaGreen" Foreground="White" FontSize="18"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="BR_OnClick" />
+    </Grid>
+</Window>

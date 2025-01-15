@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="TickTacToe/App.axaml" value="TickTacToe/TickTacToe.csproj" />
+        <entry key="TickTacToe/GameWindow.axaml" value="TickTacToe/TickTacToe.csproj" />
         <entry key="TickTacToe/MainWindow.axaml" value="TickTacToe/TickTacToe.csproj" />
       </map>
     </option>
