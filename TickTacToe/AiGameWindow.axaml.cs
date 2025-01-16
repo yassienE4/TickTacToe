@@ -30,6 +30,7 @@ public partial class AiGameWindow : Window
     
         private int turn = 0;
         private int diffuculty = 0;
+        private int mcount = 0;
 
         private List<List<CellState>> gameMatrix = new List<List<CellState>>()
         {
@@ -51,164 +52,50 @@ public partial class AiGameWindow : Window
                 Winner.Text = "Winner= O";
             }
         }
-        private void TL_OnClick(object? sender, RoutedEventArgs e)
+
+        private bool CheckWin(int row, int col, CellState player)
         {
+            // Check the row of the last move
+            if (gameMatrix[row][0] == player && gameMatrix[row][1] == player && gameMatrix[row][2] == player)
+                return true;
 
-            if (turn % 2 == 0)
-            {
-                TL.Content = "X";
-                if (TL.Content == TM.Content && TL.Content == TR.Content) { win("X"); return; }
-                if (TL.Content == MM.Content && TL.Content == BL.Content) { win("X"); return; }
-                if (TL.Content == ML.Content && TL.Content == BR.Content) { win("X"); return; }
+            // Check the column of the last move
+            if (gameMatrix[0][col] == player && gameMatrix[1][col] == player && gameMatrix[2][col] == player)
+                return true;
 
-                gameMatrix[0][0] = 1;
-                turn++;
-                var b = sender as Button;
-                b.IsEnabled = false;
-                aiTurn();
-            }
+            // Check the main diagonal if applicable
+            if (row == col && gameMatrix[0][0] == player && gameMatrix[1][1] == player && gameMatrix[2][2] == player)
+                return true;
+
+            // Check the anti-diagonal if applicable
+            if (row + col == 2 && gameMatrix[0][2] == player && gameMatrix[1][1] == player && gameMatrix[2][0] == player)
+                return true;
+
+            return false;
         }
-
-        private void TM_OnClick(object? sender, RoutedEventArgs e)
+        private void Turn_OnClick(object sender, RoutedEventArgs e)
         {
+            var button = sender as Button;
+            if (button == null || button.IsEnabled == false) return;
+
+            string name = button.Name; // Example: "TL"
+            int row = name[0] == 'T' ? 0 : name[0] == 'M' ? 1 : 2;
+            int col = name[1] == 'L' ? 0 : name[1] == 'M' ? 1 : 2;
+
+            // Player X turn
             if (turn % 2 == 0)
             {
-                TM.Content = "X";
-                if (TL.Content == TM.Content && TM.Content == TR.Content) { win("X"); return; }
-                if (TM.Content == MM.Content && TM.Content == BM.Content) { win("X"); return; }
+                button.Content = "X";
+                gameMatrix[row][col] = CellState.PlayerX;
+                button.IsEnabled = false;
 
-                gameMatrix[0][1] = 1;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void TR_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                TR.Content = "X";
-                string player = "X";
-                if (TR.Content == TM.Content && TR.Content == TL.Content) { win(player);
+                if (CheckWin(row, col, CellState.PlayerX))
+                {
+                    win("X");
                     return;
                 }
-                if (TR.Content == MR.Content && TR.Content == BR.Content) { win(player); return; }
-                if (TR.Content == MM.Content && TR.Content == BL.Content) { win(player); return; }
-
-                gameMatrix[0][2] = 1;
-                turn++;
-                var b = sender as Button;
-                b.IsEnabled = false;
-                aiTurn();
-            }
-        }
-
-        private void ML_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                ML.Content = "X";
-                string player = "X";
-                if (ML.Content == TL.Content && ML.Content == BL.Content) { win(player); return; }
-                if (ML.Content == MM.Content && ML.Content == MR.Content) { win(player); return; }
-
-                gameMatrix[1][0] = 1;
                 turn++;
                 aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void MM_OnClick(object? sender, RoutedEventArgs e)
-        {
-            
-            if (turn % 2 == 0)
-            {
-                MM.Content = "X";
-                string player = "X";
-                if (MM.Content == TL.Content && MM.Content == BR.Content) { win(player); return; }
-                if (MM.Content == TM.Content && MM.Content == BM.Content) { win(player); return; }
-                if (MM.Content == ML.Content && MM.Content == MR.Content) { win(player); return; }
-                if (MM.Content == TR.Content && MM.Content == BL.Content) { win(player); return; }
-
-                gameMatrix[1][1] = CellState.PlayerX;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void MR_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                MR.Content = "X";
-                string player = "X";
-                if (MR.Content == TR.Content && MR.Content == BR.Content) { win(player); return; }
-                if (MR.Content == MM.Content && MR.Content == ML.Content) { win(player); return; }
-
-                gameMatrix[1][2] = 1;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void BL_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                BL.Content = "X";
-                string player = "X";
-                if (BL.Content == TL.Content && BL.Content == ML.Content) { win(player); return; }
-                if (BL.Content == MM.Content && BL.Content == TR.Content) { win(player); return; }
-                if (BL.Content == BM.Content && BL.Content == BR.Content) { win(player); return; }
-
-                gameMatrix[2][0] = 1;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void BM_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                BM.Content = "X";
-                string player = "X";
-                if (BM.Content == TM.Content && BM.Content == MM.Content) { win(player); return; }
-                if (BM.Content == BL.Content && BM.Content == BR.Content) { win(player); return;}
-
-                gameMatrix[2][1] = 1;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
-            }
-        }
-
-        private void BR_OnClick(object? sender, RoutedEventArgs e)
-        {
-            if (turn % 2 == 0)
-            {
-                BR.Content = "X";
-                string player = "X";
-                if (BR.Content == TR.Content && BR.Content == MR.Content) { win(player); return; }
-                if (BR.Content == BL.Content && BR.Content == BM.Content) { win(player); return; }
-                if (BR.Content == MM.Content && BR.Content == TL.Content) { win(player); return; }
-
-                gameMatrix[2][2] = 1;
-                turn++;
-                aiTurn();
-                var b = sender as Button;
-                b.IsEnabled = false;
             }
         }
 
@@ -268,32 +155,56 @@ public partial class AiGameWindow : Window
             
             if (diffuculty == 1) // easy = purely random 
             {
-                bool done = false;
-                while (!done)
-                {
-                    int a = rnd.Next(0, 3);
-                    int b = rnd.Next(0, 3);
-                    if (gameMatrix[a][b] == CellState.Empty)
-                    {
-                        gameMatrix[a][b] = 0;
-                        buttonMatrix[a][b].Content = "O";
-                        done = true;
-                    }
-                }
+                easyMove(rnd);
             }
 
             if (diffuculty == 2) // medium = half random half algorithm
             {
-                
+                if (mcount % 2 == 0)
+                {
+                    easyMove(rnd);
+                }
+                else
+                {
+                    hardMove();
+                }
+                mcount++;
             }
 
             if (diffuculty == 3) // hard impossible using minmax
             {
-                
+                hardMove();
             }
             
             
             turn++;
+        }
+
+        private void easyMove(Random rnd)
+        {
+            bool done = false;
+            while (!done)
+            {
+                int a = rnd.Next(0, 3);
+                int b = rnd.Next(0, 3);
+                if (gameMatrix[a][b] == CellState.Empty)
+                {
+                    gameMatrix[a][b] = 0;
+                    buttonMatrix[a][b].Content = "O";
+                    buttonMatrix[a][b].IsEnabled = false;
+                    done = true;
+                    if (CheckWin(a, b, CellState.PlayerO))
+                    {
+                        win("O");
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void hardMove()
+        {
+            
         }
         private void Back_OnClick(object? sender, RoutedEventArgs e)
         {
