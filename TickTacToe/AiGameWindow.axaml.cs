@@ -20,14 +20,22 @@ public partial class AiGameWindow : Window
             new List<Button>() {BL,BM, BR},
         };
     }
+    
+    public enum CellState
+    {
+        Empty = -1,
+        PlayerX = 1,
+        PlayerO = 0
+    }
+    
         private int turn = 0;
-        public int diffuculty = 0;
+        private int diffuculty = 0;
 
-        private List<List<int>> gameMatrix = new List<List<int>>()
+        private List<List<CellState>> gameMatrix = new List<List<CellState>>()
         {
-            new List<int>() { -1, -1, -1, },
-            new List<int>() { -1, -1, -1, },
-            new List<int>() { -1, -1, -1, },
+            new List<CellState>() { CellState.Empty, CellState.Empty, CellState.Empty },
+            new List<CellState>() { CellState.Empty, CellState.Empty, CellState.Empty },
+            new List<CellState>() { CellState.Empty, CellState.Empty, CellState.Empty },
         };
 
         private List<List<Button>> buttonMatrix;
@@ -126,7 +134,7 @@ public partial class AiGameWindow : Window
                 if (MM.Content == ML.Content && MM.Content == MR.Content) { win(player); return; }
                 if (MM.Content == TR.Content && MM.Content == BL.Content) { win(player); return; }
 
-                gameMatrix[1][1] = 1;
+                gameMatrix[1][1] = CellState.PlayerX;
                 turn++;
                 aiTurn();
                 var b = sender as Button;
@@ -229,7 +237,7 @@ public partial class AiGameWindow : Window
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    gameMatrix[i][j] = -1;
+                    gameMatrix[i][j] = CellState.Empty;
                 }
             }
         }
@@ -243,7 +251,7 @@ public partial class AiGameWindow : Window
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (gameMatrix[i][j] == -1)
+                    if (gameMatrix[i][j] == CellState.Empty)
                     {
                         hasMove = true;
                         break;
@@ -265,7 +273,7 @@ public partial class AiGameWindow : Window
                 {
                     int a = rnd.Next(0, 3);
                     int b = rnd.Next(0, 3);
-                    if (gameMatrix[a][b] == -1)
+                    if (gameMatrix[a][b] == CellState.Empty)
                     {
                         gameMatrix[a][b] = 0;
                         buttonMatrix[a][b].Content = "O";

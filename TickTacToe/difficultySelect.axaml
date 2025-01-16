@@ -1,0 +1,67 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TickTacToe.difficultySelect"
+        Title="difficultySelect">
+        <Grid>
+
+                <Grid.Background>
+                        <SolidColorBrush Color="#2D2D2D" />
+                </Grid.Background>
+
+
+                <TextBlock 
+                        FontSize="48" 
+                        Foreground="White" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Top" 
+                        Margin="-6,40,0,0" Height="56" Text="Select Difficulty"/>
+
+
+                <Button 
+                        Name = "Easy"
+                        FontSize="24" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Width="256" 
+                        Height="50" 
+                        Background="#FF4CAF50" 
+                        Foreground="White" 
+                        BorderBrush="#388E3C" 
+                        BorderThickness="2" Margin="-284,50,0,0" Content="Easy" 
+                        Click="Easy_OnClick"
+                />
+                
+                <Button
+                        Name = "Medium"
+                        FontSize="24" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Width="256" 
+                        Height="50" 
+                        Background="#FF4CAF50" 
+                        Foreground="White" 
+                        BorderBrush="#388E3C" 
+                        BorderThickness="2" Margin="276,50,0,0" Content="Medium" 
+                        Click="Medium_OnClick"
+                />
+                <Button Content="Hard"
+                        Name = "Hard"
+                        FontSize="24" 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        Width="256" 
+                        Height="50" 
+                        Background="#FF4CAF50" 
+                        Foreground="White" 
+                        BorderBrush="#388E3C" 
+                        BorderThickness="2" Margin="-16,178,0,0"
+                        Click="Hard_OnClick"
+                />
+
+
+        
+        </Grid>
+</Window>

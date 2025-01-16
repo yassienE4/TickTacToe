@@ -24,9 +24,10 @@ namespace TickTacToe
 
         private void onNewAiGame(object sender, RoutedEventArgs e)
         {
-            AiGameWindow window = new AiGameWindow(1);
+            
+            difficultySelect d = new difficultySelect();
             Hide();
-            window.Show();
+            d.Show();
         }
 
         private void Quit_OnClick(object? sender, RoutedEventArgs e)
