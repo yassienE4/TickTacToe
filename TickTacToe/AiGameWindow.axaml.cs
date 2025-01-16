@@ -47,9 +47,13 @@ public partial class AiGameWindow : Window
             {
                 Winner.Text = "Winner= X";
             }
-            else
+            if(x == "O")
             {
                 Winner.Text = "Winner= O";
+            }
+            if(x == "Draw")
+            {
+                Winner.Text = "DRAW!";
             }
         }
 
@@ -149,7 +153,7 @@ public partial class AiGameWindow : Window
 
             if (!hasMove)
             {
-                Winner.Text = "Draw!";
+                win("Draw");
                 return; // No moves available, end turn
             }
             
