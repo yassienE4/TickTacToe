@@ -11,7 +11,7 @@ namespace TickTacToe
         public MainWindow()
         {
             InitializeComponent();
-            AIGAME.IsEnabled = false;
+            //AIGAME.IsEnabled = false;
         }
 
         private void onNewGame(object sender, RoutedEventArgs e)
@@ -20,6 +20,13 @@ namespace TickTacToe
             Hide();
             window.Show();
             
+        }
+
+        private void onNewAiGame(object sender, RoutedEventArgs e)
+        {
+            AiGameWindow window = new AiGameWindow(1);
+            Hide();
+            window.Show();
         }
 
         private void Quit_OnClick(object? sender, RoutedEventArgs e)

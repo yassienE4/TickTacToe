@@ -44,7 +44,8 @@
                 Background="#FF4CAF50" 
                 Foreground="White" 
                 BorderBrush="#388E3C" 
-                BorderThickness="2" Margin="276,50,0,0" />
+                BorderThickness="2" Margin="276,50,0,0" 
+                Click="onNewAiGame"/>
 
 
         <Button Content="Quit" 
