@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Selection;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 
 namespace TickTacToe;
 
@@ -384,6 +385,7 @@ public partial class AiGameWindow : Window
             }
             return clone;
         }
+        
         
         
         protected override void OnClosing(WindowClosingEventArgs e)

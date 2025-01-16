@@ -47,7 +47,7 @@
                         BorderThickness="2" Margin="276,50,0,0" Content="Medium" 
                         Click="Medium_OnClick"
                 />
-                <Button Content="Hard"
+                <Button Content="Hard (Impossible)"
                         Name = "Hard"
                         FontSize="24" 
                         HorizontalAlignment="Center" 
