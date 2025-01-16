@@ -85,30 +85,30 @@ public partial class AiGameWindow : Window
             return false;
         }
         
-        private bool CheckWinALL(CellState player) // used by ai
+        private bool CheckWinALL(List<List<CellState>> board, CellState player) // used by ai
         {
             // Rows
             for (int i = 0; i < 3; i++)
             {
-                if (gameMatrix[i][0] == player && gameMatrix[i][1] == player && gameMatrix[i][2] == player)
+                if (board[i][0] == player && board[i][1] == player && board[i][2] == player)
                     return true;
             }
             // Columns
             for (int i = 0; i < 3; i++)
             {
-                if (gameMatrix[0][i] == player && gameMatrix[1][i] == player && gameMatrix[2][i] == player)
+                if (board[0][i] == player && board[1][i] == player && board[2][i] == player)
                     return true;
             }
             // Diagonals
-            if (gameMatrix[0][0] == player && gameMatrix[1][1] == player && gameMatrix[2][2] == player)
+            if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
                 return true;
-            if (gameMatrix[0][2] == player && gameMatrix[1][1] == player && gameMatrix[2][0] == player)
+            if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
                 return true;
 
             return false;
         }
         
-        private bool CheckDraw()
+        private bool CheckDraw(List<List<CellState>> board)
         {
             // Iterate through the game matrix
             for (int i = 0; i < 3; i++)
@@ -116,7 +116,7 @@ public partial class AiGameWindow : Window
                 for (int j = 0; j < 3; j++)
                 {
                     // If any cell is empty, it's not a draw
-                    if (gameMatrix[i][j] == CellState.Empty)
+                    if (board[i][j] == CellState.Empty)
                     {
                         return false;
                     }
@@ -293,23 +293,23 @@ public partial class AiGameWindow : Window
             // base cases 
             
             // if x wins
-            if (CheckWinALL(CellState.PlayerX)) // player 1 maximiing 
+            if (CheckWinALL(board, CellState.PlayerX)) // player 1 maximiing 
             {
-                Console.Write("x won");
+
                 return new Tuple<int, Tuple<int?, int?>>(1, new Tuple<int?, int?>(null, null)); // eval pos1, coords in pos2
             }
             
             // if o wins
-            if (CheckWinALL(CellState.PlayerO)) // player 2 minimising 
+            if (CheckWinALL(board, CellState.PlayerO)) // player 2 minimising 
             {
-                Console.Write("O won");
+
                 return new Tuple<int, Tuple<int?, int?>>(-1, new Tuple<int?, int?>(null, null));
             }
             
             // if draw
-            if (CheckDraw())
+            if (CheckDraw(board))
             {
-                Console.Write("Draw won");
+
                 return new Tuple<int, Tuple<int?, int?>>(0, new Tuple<int?, int?>(null, null));
             }
             
@@ -332,7 +332,7 @@ public partial class AiGameWindow : Window
                     }
                 }
 
-                return new Tuple<int, Tuple<int?, int?>>(maxEval, bestmove);
+                return new Tuple<int, Tuple<int?, int?>>(maxEval, new Tuple<int?, int?>(bestmove.Item1, bestmove.Item2));
             }
             else
             {
@@ -342,6 +342,7 @@ public partial class AiGameWindow : Window
 
                 foreach (var pair in emptySquares)
                 {
+
                     List<List<CellState>> boardCopy = CloneBoard(board);
                     boardCopy[pair.Item1][pair.Item2] = CellState.PlayerO;
                     int eval = minmax(boardCopy, true).Item1;
@@ -351,8 +352,8 @@ public partial class AiGameWindow : Window
                         bestmove = new Tuple<int?, int?>(pair.Item1, pair.Item2);
                     }
                 }
-
-                return new Tuple<int, Tuple<int?, int?>>(minEval, bestmove);
+              
+                return new Tuple<int, Tuple<int?, int?>>(minEval, new Tuple<int?, int?>(bestmove.Item1, bestmove.Item2));
             }
             
         }
