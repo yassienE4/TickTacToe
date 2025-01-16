@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Selection;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
@@ -63,26 +64,69 @@ public partial class AiGameWindow : Window
             }
         }
 
-        private bool CheckWin(int row, int col, CellState player)
+        private bool CheckWin(int row, int col, CellState player) // used by player - more efficient as it knows the last move
         {
-            // Check the row of the last move
+            // check the row of the last move
             if (gameMatrix[row][0] == player && gameMatrix[row][1] == player && gameMatrix[row][2] == player)
                 return true;
 
-            // Check the column of the last move
+            // check the column of the last move
             if (gameMatrix[0][col] == player && gameMatrix[1][col] == player && gameMatrix[2][col] == player)
                 return true;
 
-            // Check the main diagonal if applicable
+            // check the diagonal if applicable
             if (row == col && gameMatrix[0][0] == player && gameMatrix[1][1] == player && gameMatrix[2][2] == player)
                 return true;
 
-            // Check the anti-diagonal if applicable
+            // check the other diagonal if applicable
             if (row + col == 2 && gameMatrix[0][2] == player && gameMatrix[1][1] == player && gameMatrix[2][0] == player)
                 return true;
 
             return false;
         }
+        
+        private bool CheckWinALL(CellState player) // used by ai
+        {
+            // Rows
+            for (int i = 0; i < 3; i++)
+            {
+                if (gameMatrix[i][0] == player && gameMatrix[i][1] == player && gameMatrix[i][2] == player)
+                    return true;
+            }
+            // Columns
+            for (int i = 0; i < 3; i++)
+            {
+                if (gameMatrix[0][i] == player && gameMatrix[1][i] == player && gameMatrix[2][i] == player)
+                    return true;
+            }
+            // Diagonals
+            if (gameMatrix[0][0] == player && gameMatrix[1][1] == player && gameMatrix[2][2] == player)
+                return true;
+            if (gameMatrix[0][2] == player && gameMatrix[1][1] == player && gameMatrix[2][0] == player)
+                return true;
+
+            return false;
+        }
+        
+        private bool CheckDraw()
+        {
+            // Iterate through the game matrix
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    // If any cell is empty, it's not a draw
+                    if (gameMatrix[i][j] == CellState.Empty)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            // If no player has won and all cells are filled, it's a draw
+            return true;
+        }
+        
         private void Turn_OnClick(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -214,7 +258,22 @@ public partial class AiGameWindow : Window
 
         private void hardMove()
         {
-            
+            var result = minmax(gameMatrix, false);
+            var move = result.Item2;
+            if (move == null || !move.Item1.HasValue || !move.Item2.HasValue)
+            {
+                // If no valid move is returned, declare a draw and return.
+                win("Draw");
+                return;
+            }
+            gameMatrix[move.Item1.Value][move.Item2.Value] = CellState.PlayerO;
+            buttonMatrix[move.Item1.Value][move.Item2.Value].Content = "O";
+            buttonMatrix[move.Item1.Value][move.Item2.Value].IsEnabled = false;
+            if (CheckWin(move.Item1.Value,move.Item2.Value, CellState.PlayerO))
+            {
+                win("O");
+                return;
+            }
         }
         private void Back_OnClick(object? sender, RoutedEventArgs e)
         {
@@ -228,6 +287,103 @@ public partial class AiGameWindow : Window
         {
             WinnerPopup.IsOpen = false;
         }
+
+        private Tuple<int,Tuple<int?, int?>> minmax(List<List<CellState>> board, bool maximising)
+        {
+            // base cases 
+            
+            // if x wins
+            if (CheckWinALL(CellState.PlayerX)) // player 1 maximiing 
+            {
+                Console.Write("x won");
+                return new Tuple<int, Tuple<int?, int?>>(1, new Tuple<int?, int?>(null, null)); // eval pos1, coords in pos2
+            }
+            
+            // if o wins
+            if (CheckWinALL(CellState.PlayerO)) // player 2 minimising 
+            {
+                Console.Write("O won");
+                return new Tuple<int, Tuple<int?, int?>>(-1, new Tuple<int?, int?>(null, null));
+            }
+            
+            // if draw
+            if (CheckDraw())
+            {
+                Console.Write("Draw won");
+                return new Tuple<int, Tuple<int?, int?>>(0, new Tuple<int?, int?>(null, null));
+            }
+            
+            // alogorithm here
+            if (maximising)
+            {
+                int maxEval = -100;
+                Tuple<int?,int?> bestmove = null;
+                List<Tuple<int, int>> emptySquares = getEmptySquares(board);
+
+                foreach (var pair in emptySquares)
+                {
+                    List<List<CellState>> boardCopy = CloneBoard(board);
+                    boardCopy[pair.Item1][pair.Item2] = CellState.PlayerX;
+                    int eval = minmax(boardCopy, false).Item1;
+                    if (eval > maxEval)
+                    {
+                        maxEval = eval;
+                        bestmove = new Tuple<int?, int?>(pair.Item1, pair.Item2);
+                    }
+                }
+
+                return new Tuple<int, Tuple<int?, int?>>(maxEval, bestmove);
+            }
+            else
+            {
+                int minEval = 100;
+                Tuple<int?,int?> bestmove = new Tuple<int?, int?>(null, null);
+                List<Tuple<int, int>> emptySquares = getEmptySquares(board);
+
+                foreach (var pair in emptySquares)
+                {
+                    List<List<CellState>> boardCopy = CloneBoard(board);
+                    boardCopy[pair.Item1][pair.Item2] = CellState.PlayerO;
+                    int eval = minmax(boardCopy, true).Item1;
+                    if (eval < minEval)
+                    {
+                        minEval = eval;
+                        bestmove = new Tuple<int?, int?>(pair.Item1, pair.Item2);
+                    }
+                }
+
+                return new Tuple<int, Tuple<int?, int?>>(minEval, bestmove);
+            }
+            
+        }
+
+        private List<Tuple<int, int>> getEmptySquares(List<List<CellState>> board)
+        {
+            List<Tuple<int, int>> emptySquares = new List<Tuple<int, int>>(); // tuple = pair in c++
+            
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    if (board[i][j] == CellState.Empty)
+                    {
+                        emptySquares.Add(new Tuple<int, int>(i, j));
+                    }
+                }
+            }
+            return emptySquares;
+        }
+        
+        private List<List<CellState>> CloneBoard(List<List<CellState>> original)
+        {
+            var clone = new List<List<CellState>>();
+            foreach (var row in original)
+            {
+                clone.Add(new List<CellState>(row));
+            }
+            return clone;
+        }
+        
         
         protected override void OnClosing(WindowClosingEventArgs e)
         {
