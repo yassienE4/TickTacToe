@@ -34,5 +34,12 @@ namespace TickTacToe
         {
             Environment.Exit(0);
         }
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+            // Ensure the application exits fully
+            Environment.Exit(0);
+        }
+
     }
 }

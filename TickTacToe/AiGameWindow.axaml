@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TickTacToe.AiGameWindow"
         Title="AiGameWindow">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="True" Name = "MainGrid">
         <!-- Define a 4x3 Grid -->
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -67,5 +67,15 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 Background="LightSeaGreen" Foreground="White" FontSize="18"
                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Turn_OnClick" />
+        
+        <Popup  Name="WinnerPopup" PlacementTarget="{Binding ElementName=MainGrid}" IsLightDismissEnabled="True" HorizontalOffset="0" VerticalOffset="-350">
+                <Border Background="Black" BorderBrush="Black" BorderThickness="1" Padding="20" CornerRadius="5">
+                        <StackPanel>
+                                <TextBlock Name="PopupMessage" Text="Winner!" FontSize="18" HorizontalAlignment="Center" Margin="10" />
+                                <Button Name = "ClosePopUp" Content="Close" HorizontalAlignment="Center" Click="ClosePopUp_OnClick" />
+                        </StackPanel>
+                </Border>
+        </Popup>
+        
     </Grid>
 </Window>

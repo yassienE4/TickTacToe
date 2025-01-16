@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -187,4 +188,13 @@ public partial class GameWindow : Window
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
+        
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+            // Ensure the application exits fully
+            Environment.Exit(0);
+        }
+
+
 }

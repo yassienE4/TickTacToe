@@ -46,14 +46,20 @@ public partial class AiGameWindow : Window
             if (x == "X")
             {
                 Winner.Text = "Winner= X";
+                PopupMessage.Text = "X won";
+                WinnerPopup.IsOpen = true;
             }
             if(x == "O")
             {
                 Winner.Text = "Winner= O";
+                PopupMessage.Text = "O won";
+                WinnerPopup.IsOpen = true;
             }
             if(x == "Draw")
             {
                 Winner.Text = "DRAW!";
+                PopupMessage.Text = "DRAW";
+                WinnerPopup.IsOpen = true;
             }
         }
 
@@ -217,5 +223,17 @@ public partial class AiGameWindow : Window
             mainWindow.Show();
         }
 
+
+        private void ClosePopUp_OnClick(object? sender, RoutedEventArgs e)
+        {
+            WinnerPopup.IsOpen = false;
+        }
         
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+            // Ensure the application exits fully
+            Environment.Exit(0);
+        }
+
 }
